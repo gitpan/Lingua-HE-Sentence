@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::HE::Sentence.
 
+0.09	Wed Jul 21 00:27:55 IDT 2004
+	- Added requirement for Perl 5.8.4 in the Makefile.PL
+	- Added Test::More are a prerequisite
 0.08	Fri Jul  9 07:03:24 IDT 2004
 	- Perl 5.8.0 is supposed to support user defined Unicode character 
 	classes, however, this feature doesn't work (a bug in Perl?). It seems
