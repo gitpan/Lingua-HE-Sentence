@@ -1,5 +1,13 @@
 Revision history for Perl extension Lingua::HE::Sentence.
 
+0.08	Fri Jul  9 07:03:24 IDT 2004
+	- Perl 5.8.0 is supposed to support user defined Unicode character 
+	classes, however, this feature doesn't work (a bug in Perl?). It seems
+	that Perl 5.8.3 and above (so far I could test it only with Perl 
+	5.8.4.) do not suffer from this bug and they do handle it correctly.
+	- Added LICENSE file.
+0.07	Thu Jul  8 13:50:22 IDT 2004
+	- Changed restriction of Perl version to a portable format
 0.06	Thu Jul  8 11:56:22 IDT 2004
 	- Corrected MANIFEST
 0.05	Thu Jul  8 08:20:30 IDT 2004
