@@ -1,0 +1,5 @@
+Revision history for Perl extension Lingua::HE::Sentence.
+
+0.01	Tue Sep 24 12:32:46 IDT 2002
+	- First version of a software for segmenting Hebrew text into sentences.
+
