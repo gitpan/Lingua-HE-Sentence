@@ -118,6 +118,8 @@ Shlomo Yona shlomo@cs.haifa.ac.il
 
 Copyright (c) 2001-2004 Shlomo Yona. All rights reserved.
 
+=head1 LICENSE
+
 This library is free software. 
 You can redistribute it and/or modify it under the same terms as Perl itself.  
 
@@ -153,7 +155,7 @@ require Exporter;
 use Carp qw/cluck/;
 use utf8;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 our @ISA = qw( Exporter );
 our @EXPORT_OK = qw( get_sentences get_EOS set_EOS);
