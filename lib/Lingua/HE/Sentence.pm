@@ -1,5 +1,4 @@
 package Lingua::HE::Sentence;
-require 5.8.0; # due to Unicode support
 
 #==============================================================================
 #
@@ -137,7 +136,8 @@ You can redistribute it and/or modify it under the same terms as Perl itself.
 # Pragmas
 #
 #==============================================================================
-require 5.8.0;
+
+use 5.008_000; # due to utf8 support
 use warnings;
 use strict;
 #==============================================================================
@@ -155,7 +155,7 @@ require Exporter;
 use Carp qw/cluck/;
 use utf8;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 our @ISA = qw( Exporter );
 our @EXPORT_OK = qw( get_sentences get_EOS set_EOS);
