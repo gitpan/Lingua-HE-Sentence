@@ -155,7 +155,7 @@ require Exporter;
 use Carp qw/cluck/;
 use utf8;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 our @ISA = qw( Exporter );
 our @EXPORT_OK = qw( get_sentences get_EOS set_EOS);
@@ -229,13 +229,13 @@ sub sentence_breaking {
 	$text=~s/\n\s*\n/$EOS/gs;
 	## break by end-of-sentence just before closing quotes/punct. and opening quotes/punct.
 	$text=~s/(\p{IsEndOfSentenceCharacter}+(['"\p{ClosePunctuation}])?\s+)/$1$EOS/gs;
-	$text=~s/(['"\p{ClosePunctuation}]\s*\p{IsEndOfSentenceCharacter}+)/$1$EOS/gs;
+	$text=~s/(['"\p{ClosePunctuation}]\s*\p{IsEndOfSentenceCharacter}+\s+)/$1$EOS/gs;
 
 	# breake also when single letter comes before punc.
-	$text=~s/(\s\w\p{IsEndOfSentenceCharacter})/$1$EOS/gs; 
+	$text=~s/(\s\w\p{IsEndOfSentenceCharacter}\s+)/$1$EOS/gs; 
 
 	## unbreak a series of alphanum/end-of-sentence within punctuation before an EOS
-	$text=~s/(\p{Punctuation}[\w\p{IsEndOfSentenceCharacter}]+\p{Punctuation}\s*)$EOS/$1/gs; 
+	$text=~s/(\p{Punctuation}[\w\p{IsEndOfSentenceCharacter}]['"\p{ClosePunctuation}]\s*)$EOS/$1/gs; 
 	## re-break stuff
 	$text=~s/(\p{IsEndOfSentenceCharacter}+['"\p{ClosePunctuation}]?\s+)(?!$EOS)/$1$EOS/gs;
 

@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::HE::Sentence.
 
+0.13	Tue Jan 25 19:56:56 IST 2005
+	- Fixed bug with single letters
+	- Fixed bug with handling of closing punctuation
+	- Added tests to verify the fix
 0.12	Tue Jan 25 15:49:43 IST 2005
 	- Added more test cases
 	- Updated algorithm to properly handle new test cases
