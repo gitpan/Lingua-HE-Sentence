@@ -37,6 +37,38 @@ ISO 8859 (charset):     8859-8
 ANSI codepage:          1255
 Unicode:                0590-05FF
 
+=head1 PROBLEM DESCRIPTION
+
+Many applications in natural language processing require some knowledge of sentence boundaries. The problem of properly locating sentence bonudaries in text in Hebrew is in many ways less severe than the same problem in other languages. The purpose of this module is to supply Perl users with a tool which can take plain text in Hebrew and get an ordered list of the sentences in the text.
+
+=head1 PROPERTIES OF HEBREW SENTENCES
+
+The following facts are part of the guidelines given by the 'academy of the Hebrew language'.
+
+Sentences usually end with one of the following punctuation symbols:
+	.	a dot
+	?	a question mark
+	!	an exclamation mark
+
+No dot should be placed after sentences on titles (such as book names, chpter titles etc.)
+
+A dot can be placed after letters and numbers used for listing items, chapters etc., as long as these letters or numbers are not placed on a special line. When these letters or numbers appear alone, no dot should succeed them. Brackets or a closing bracket can be used instead of a dot in this case.
+
+Decimal point should be represented with a dot and not a comma in order to distinguish the number from its decimal fraction.
+
+In some rare cases semicolons also represent end of sentence, but usually the sentences separated by sa semicolor are practically one long sentence. I chose not to split on semicolons at all.
+
+
+=head1 ASSUMPTIONS
+
+Input text is assumed to be represented in CP1255 (logical Hebrew).
+
+Input text is assumed to have some structure, i.e. titles are separated from the rest of the text with at least a couple of newline characters ('\n').
+
+Input is expected to follow the PROPERTIES listed above.
+
+Complex sentences should be further segmented using clause identificatoin algorithms, this module will not provide (at least in this version) any support for clause identification and segmentation.
+
 =head1 FUNCTIONS
 
 All functions used should be requested in the 'use' clause. None is exported by default.
@@ -55,13 +87,19 @@ This function returns the value of the string used to mark the end of sentence. 
 
 This function alters the end-of-sentence string used to mark the end of sentences. 
 
-=head1 FUTURE WORK
+=head1 BUGS
+
+No proper handling of sentence boundaries within and in presence or quotes (either single or dounle).
+
+=head1 FUTURE WORK (in no particular order)
 
 =item [1] Object Oriented like usage.
 
 =item [2] Supporting more encodings, or at least UNICODE (e.g. utf-8).
 
 =item [3] Code cleanup and optimization.
+
+=item [4] Fix bugs
 
 =head1 SEE ALSO
 
@@ -110,7 +148,7 @@ require Exporter;
 use vars qw/$VERSION @ISA @EXPORT_OK $EOS $LOC $AP $P $PAP/;
 use Carp qw/cluck/;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 # LC_CTYPE now in locale "French, Canada, codeset ISO 8859-1"
 $LOC=setlocale(LC_CTYPE, "CP1255"); 
