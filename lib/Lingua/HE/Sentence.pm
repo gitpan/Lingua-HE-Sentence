@@ -24,7 +24,7 @@ Lingua::HE::Sentence - Module for splitting Hebrew text into sentences.
 
 The C<Lingua::HE::Sentence> module contains the function get_sentences, which splits Hebrew text into its constituent sentences, based on regular expressions.
 
-The module assumes text encoded in Logical Hebrew, according to CP1255. Supporting other input formats is possible, but I need people to ask for it.
+The module assumes text encoded in UTF-8. Supporting other input formats will be added upon request.
 
 =head1 HEBREW DETAILS
 
@@ -61,7 +61,7 @@ In some rare cases semicolons also represent end of sentence, but usually the se
 
 =head1 ASSUMPTIONS
 
-Input text is assumed to be represented in CP1255 (logical Hebrew).
+Input text is assumed to be represented in UTF-8
 
 Input text is assumed to have some structure, i.e. titles are separated from the rest of the text with at least a couple of newline characters ('\n').
 
@@ -93,13 +93,17 @@ No proper handling of sentence boundaries within and in presence or quotes (eith
 
 =head1 FUTURE WORK (in no particular order)
 
+=item [0] Write tests!
+
 =item [1] Object Oriented like usage.
 
-=item [2] Supporting more encodings, or at least UNICODE (e.g. utf-8).
+=item [2] Supporting more encodings/charsets.
 
 =item [3] Code cleanup and optimization.
 
-=item [4] Fix bugs
+=item [4] Fix bugs.
+
+=item [5] Generate sentencizer based on supervised learning. (requires tagged texts...)
 
 =head1 SEE ALSO
 
@@ -111,7 +115,7 @@ Shlomo Yona shlomo@cs.haifa.ac.il
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001, 2002 Shlomo Yona. All rights reserved.
+Copyright (c) 2001-2004 Shlomo Yona. All rights reserved.
 
 This library is free software. 
 You can redistribute it and/or modify it under the same terms as Perl itself.  
@@ -130,9 +134,9 @@ You can redistribute it and/or modify it under the same terms as Perl itself.
 # Pragmas
 #
 #==============================================================================
-require 5.005_03;
+require 5.8.0;
+use warnings;
 use strict;
-use POSIX qw(locale_h);
 #==============================================================================
 #
 # Modules
@@ -145,23 +149,15 @@ require Exporter;
 # Public globals
 #
 #==============================================================================
-use vars qw/$VERSION @ISA @EXPORT_OK $EOS $LOC $AP $P $PAP/;
 use Carp qw/cluck/;
+use utf8;
 
-$VERSION = '0.02';
+our $VERSION = '0.03';
 
-# LC_CTYPE now in locale "French, Canada, codeset ISO 8859-1"
-$LOC=setlocale(LC_CTYPE, "CP1255"); 
-use locale;
+our @ISA = qw( Exporter );
+our @EXPORT_OK = qw( get_sentences get_EOS set_EOS);
 
-@ISA = qw( Exporter );
-@EXPORT_OK = qw( get_sentences 
-		get_EOS set_EOS);
-
-$EOS="\001";
-$P = q/[\.!?]/;			## PUNCTUATION
-$AP = q/(?:'|"|\)|\]|\})?/;	## AFTER PUNCTUATION
-$PAP = $P.$AP;
+our $EOS="\001";
 
 #==============================================================================
 #
@@ -219,7 +215,6 @@ sub clean_sentences {
 			next if $s!~m/\w+/;
 			$s=~s/^\s*//;
 			$s=~s/\s*$//;
-##			$s=~s/\s+/ /g;
 			push @$cleaned_sentences,$s;
 		}
 	return $cleaned_sentences;
@@ -228,9 +223,21 @@ sub clean_sentences {
 sub first_sentence_breaking {
 	my ($text) = @_;
 	$text=~s/\n\s*\n/$EOS/gs;	## double new-line means a different sentence.
-	$text=~s/($PAP\s)/$1$EOS/gs;
-	$text=~s/(\s\w$P)/$1$EOS/gs; # breake also when single letter comes before punc.
+	$text=~s/(\p{IsEndOfSentenceCharacter}['"\p{ClosePunctuation}\p{OpenPunctuation}]?\s)/$1$EOS/gs;
+	$text=~s/(\s\w\p{IsEndOfSentenceCharacter})/$1$EOS/gs; # breake also when single letter comes before punc.
 	return $text;
+}
+
+# End of Sentence characters
+# 21 !
+# 2E .
+# 3F ?
+sub IsEndOfSentenceCharacter {
+	return <<'END';
+21
+2E
+3F
+END
 }
 
 #==============================================================================

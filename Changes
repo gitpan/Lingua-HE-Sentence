@@ -1,5 +1,10 @@
 Revision history for Perl extension Lingua::HE::Sentence.
 
+0.03	Thu Jun 17 22:30:11 IDT 2004
+	- Works now on UTF-8 encoded texts rather than CP1255/ISO-8859-8 texts
+	- removed requirement for POSIX
+	- requires now Perl 5.8.0
+	- Very minor change to regular expressions
 0.02	Tue Sep 24 16:01:01 IDT 2002
 	- Explaining the expected behaviour of the splitting algorithm
 0.01	Tue Sep 24 12:32:46 IDT 2002
