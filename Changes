@@ -1,5 +1,7 @@
 Revision history for Perl extension Lingua::HE::Sentence.
 
+0.11	Fri Sep 24 22:33:49 IST 2004
+	- Fixed bug in the sentence cleaner
 0.10	Fri Jul 23 13:12:41 IDT 2004
 	- Added requirement for Perl 5.8.4 in the Makefile.PL (fixed)
 0.09	Wed Jul 21 00:27:55 IDT 2004

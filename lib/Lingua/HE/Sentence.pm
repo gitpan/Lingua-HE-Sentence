@@ -155,7 +155,7 @@ require Exporter;
 use Carp qw/cluck/;
 use utf8;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 our @ISA = qw( Exporter );
 our @EXPORT_OK = qw( get_sentences get_EOS set_EOS);
@@ -215,7 +215,7 @@ sub clean_sentences {
 		my $cleaned_sentences = [];
 		foreach my $s (@$sentences) {
 			next if not defined $s;
-			next if $s!~m/\w+/;
+			next if $s=~m/^\s*$/;
 			$s=~s/^\s*//;
 			$s=~s/\s*$//;
 			push @$cleaned_sentences,$s;
