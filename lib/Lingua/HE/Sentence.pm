@@ -1,4 +1,5 @@
 package Lingua::HE::Sentence;
+require 5.8.0; # due to Unicode support
 
 #==============================================================================
 #
@@ -89,7 +90,7 @@ This function alters the end-of-sentence string used to mark the end of sentence
 
 =head1 BUGS
 
-No proper handling of sentence boundaries within and in presence or quotes (either single or dounle).
+No proper handling of sentence boundaries within and in presence of quotes (either single or dounle). Please report bugs at http://rt.cpan.org/ and CC the author (see details below).
 
 =head1 FUTURE WORK (in no particular order)
 
@@ -152,7 +153,7 @@ require Exporter;
 use Carp qw/cluck/;
 use utf8;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 our @ISA = qw( Exporter );
 our @EXPORT_OK = qw( get_sentences get_EOS set_EOS);
@@ -176,7 +177,7 @@ sub get_sentences {
 	my ($text)=@_;
 	return [] unless defined $text;
 
-	my $marked_text = first_sentence_breaking($text);
+	my $marked_text = sentence_breaking($text);
 	my @sentences = split(/$EOS/,$marked_text);
 	my $cleaned_sentences = clean_sentences(\@sentences);
 	return $cleaned_sentences;
@@ -209,7 +210,7 @@ sub set_EOS {
 
 sub clean_sentences {
 	my ($sentences) = @_;
-		my $cleaned_sentences;
+		my $cleaned_sentences = [];
 		foreach my $s (@$sentences) {
 			next if not defined $s;
 			next if $s!~m/\w+/;
@@ -220,11 +221,18 @@ sub clean_sentences {
 	return $cleaned_sentences;
 }
 
-sub first_sentence_breaking {
+sub sentence_breaking {
 	my ($text) = @_;
-	$text=~s/\n\s*\n/$EOS/gs;	## double new-line means a different sentence.
+	## double new-line means a different sentence.
+	$text=~s/\n\s*\n/$EOS/gs;
+	## break by end-of-sentence just before closing quotes/punct. and opening quotes/punct.
 	$text=~s/(\p{IsEndOfSentenceCharacter}['"\p{ClosePunctuation}\p{OpenPunctuation}]?\s)/$1$EOS/gs;
-	$text=~s/(\s\w\p{IsEndOfSentenceCharacter})/$1$EOS/gs; # breake also when single letter comes before punc.
+	# breake also when single letter comes before punc.
+	$text=~s/(\s\w\p{IsEndOfSentenceCharacter})/$1$EOS/gs; 
+	## unbreak a series of alphanum/end-of-sentence within punctuation before an EOS
+	$text=~s/(\p{Punctuation}[\w\p{IsEndOfSentenceCharacter}]+\p{Punctuation}\s*)$EOS/$1/gs; 
+	## re-break stuff like ...
+	$text=~s/(\p{IsEndOfSentenceCharacter}{3,}\s+)/$1$EOS/gs;
 	return $text;
 }
 

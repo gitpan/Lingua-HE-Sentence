@@ -1,5 +1,11 @@
 Changes
+Makefile.PL
 INSTALL
 MANIFEST
-Makefile.PL
+lib/Lingua
+lib/Lingua/HE
 lib/Lingua/HE/Sentence.pm
+t/module.1.t
+t/module.2.t
+t/module.3.t
+t/sentences.t

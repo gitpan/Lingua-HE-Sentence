@@ -1,5 +1,11 @@
 Revision history for Perl extension Lingua::HE::Sentence.
 
+0.04	Wed Jul  7 22:43:45 IDT 2004
+	- Added tests
+	- Algorithm was altered into a more sophisticated one: see testbench
+	- Fixed typo in documentation
+	- Added instructions regarding bug reports in documentation
+	- Added restriction for usage under Perl 5.8.0 and above
 0.03	Thu Jun 17 22:30:11 IDT 2004
 	- Works now on UTF-8 encoded texts rather than CP1255/ISO-8859-8 texts
 	- removed requirement for POSIX
